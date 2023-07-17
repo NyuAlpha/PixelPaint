@@ -5,21 +5,18 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import model.AppModel;
+import tools.drawables.Drawable;
 
 public abstract class Tool {
 
-	protected Color color;
 	protected AppModel appModel;
 	
 	public Tool(AppModel appModel) {
 		this.appModel = appModel;
 	}
 	
-	public abstract void use (Graphics2D g, Point point);
-	
-	
-	public void setColor(Color color) {
-		this.color = color;
-	}
+	public abstract void use (Graphics2D g2, Point point);
+	public abstract Drawable createDrawable();
 
+	public abstract void deleteDrawable();
 }

@@ -5,20 +5,34 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import model.AppModel;
+import tools.drawables.Drawable;
+import tools.drawables.Stroke;
 
 public class Pencil extends Tool {
 
-	public Pencil(Color color,AppModel appModel) {
+	
+	private Drawable drawable;
+	
+	public Pencil(AppModel appModel) {
 		super(appModel);
-		this.color = color;
 	}
 	
 	@Override
 	public void use(Graphics2D g2 , Point point) {
-		int stroke = appModel.getStrokeSize();
-		g2.setPaint(color);
-		g2.fillRect(point.x, point.y, stroke, stroke);
-		g2.dispose();
+		((Stroke)drawable).addPoint(point);
+		((Stroke)drawable).drawLast(g2);
+	}
+	
+	public Drawable createDrawable() {
+		int strokeSize = appModel.getStrokeSize();		
+		Color color  = appModel.getSelectedColor();
+		drawable = new Stroke(strokeSize, color);
+		return drawable;
+	}
+
+	@Override
+	public void deleteDrawable() {
+		drawable = null;	
 	}
 
 }

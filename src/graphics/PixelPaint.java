@@ -10,11 +10,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 
 import model.AppModel;
+import tools.MeshLayer;
 
 //Main application window
 public class PixelPaint extends JFrame{
@@ -57,6 +61,17 @@ public class PixelPaint extends JFrame{
 		setLayout(new BorderLayout(10,10));
 		add(centerPanel,BorderLayout.CENTER);
 		add(toolsPanel,BorderLayout.WEST);
+		
+		JToolBar toolbar = new JToolBar(JToolBar.HORIZONTAL);
+		JButton btnUndo = new JButton(new ImageIcon("src\\img\\undo.png"));
+		btnUndo.addActionListener( e -> canvas.undo());
+		JButton btnRedo = new JButton(new ImageIcon("src\\img\\redo.png"));
+		btnRedo.addActionListener( e -> canvas.redo());
+		toolbar.add(btnUndo);
+		toolbar.add(btnRedo);
+		add(toolbar, BorderLayout.NORTH);
+		
+		
 		pack();
 		
 		MouseAdapter listener = new PainterMouseListener();
@@ -78,12 +93,12 @@ public class PixelPaint extends JFrame{
 	
 	
 	private void initVoidImage() {
-		int width = 600;
-		int height = 400;
+		int width = 512;
+		int height = 512;
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		int [] pixels = image.getRGB(0,0,width, height,null,0,width);
 		for(int i = 0 ; i < pixels.length ; i++) {
-			pixels[i] = Color.WHITE.getRGB();
+			pixels[i] = Color.LIGHT_GRAY.getRGB();
 		}
 		image.setRGB(0, 0, width, height, pixels, 0, 0);
 	}
@@ -95,18 +110,18 @@ public class PixelPaint extends JFrame{
 		
 	    @Override
 	    public void mousePressed(MouseEvent e) {
-	    	canvas.setPoint(e.getPoint());
+	    	canvas.clickedPoint(e.getPoint());
 	    	repaint();
 	    }
 
 	    @Override
 	    public void mouseReleased(MouseEvent e) {
-	    	canvas.setPoint(null);
+	    	canvas.releasedPoint();
 	    }
 
 	    @Override
 	    public void mouseDragged(MouseEvent e) {
-	    	canvas.setPoint(e.getPoint());
+	    	canvas.changedPoint(e.getPoint());
 	    	repaint();
 	    }
 	}
