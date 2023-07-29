@@ -5,21 +5,23 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Stroke implements Drawable {
 
-	private ArrayList<Point> points; //Guarda todos los puntos a dibujar
+	private LinkedList<Point> points; //Guarda todos los puntos a dibujar
 	private int indexLastPoints; //Establecerá los puntos desde los que dibujar en el método drawSince
 	private int strokeSize;
 	private Color color;
 	
 	public Stroke(int strokeSize , Color color) {
-		points = new ArrayList<>();
+		points = new LinkedList<>();
 		indexLastPoints = 0;
 		this.strokeSize = strokeSize;
 		this.color = color;
 	}
 	
+	/*
 	@Override
 	public void drawAll(Graphics2D g2) {
 		
@@ -27,10 +29,20 @@ public class Stroke implements Drawable {
 			g2.setPaint(color);
 			g2.fillRect(p.x, p.y, strokeSize, strokeSize);
 		}
+	}*/
+	
+	@Override
+	public void drawAll(BufferedImage image) {
+		
+		Graphics2D g2 = image.createGraphics();
+		for(Point p : points) {
+			g2.setPaint(color);
+			g2.fillRect(p.x, p.y, strokeSize, strokeSize);
+		}
 	}
 	
 	
-	@Override
+	//Dibuja solo los último añadido
 	public void drawLast(Graphics2D g2) {
 	    
 		for(int i = indexLastPoints ; i < points.size() ; i++) {

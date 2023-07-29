@@ -5,18 +5,17 @@ import java.awt.Dimension;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
+import tools.Tool;
 
 
+//This class represent a button from the painting toolbox
 public class ToolButton extends JButton {
 
-	public final static int WIDTH = 32;
-	public final static int HEIGHT = 32;
 	
-	public ToolButton(Icon icon) {
+	public ToolButton(Icon icon ,  Tool tool , Canvas canvas) {
 		super(icon);
-		setPreferredSize(new Dimension(icon.getIconWidth(),icon.getIconHeight()));
-		//setMaximumSize(new Dimension(20,20));
-		//setMinimumSize(new Dimension(20,20));
+		//change the tool on the canvas
+		addActionListener( e -> canvas.setToolUsed(tool));
 	}
 	
 }

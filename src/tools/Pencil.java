@@ -3,6 +3,7 @@ package tools;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 
 import model.AppModel;
 import tools.drawables.Drawable;
@@ -18,7 +19,8 @@ public class Pencil extends Tool {
 	}
 	
 	@Override
-	public void use(Graphics2D g2 , Point point) {
+	public void use(BufferedImage image , Point point) {
+		Graphics2D g2 = image.createGraphics();
 		((Stroke)drawable).addPoint(point);
 		((Stroke)drawable).drawLast(g2);
 	}

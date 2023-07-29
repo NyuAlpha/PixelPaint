@@ -14,25 +14,12 @@ import javax.swing.JToolBar;
 import model.AppModel;
 import tools.*;
 
+
+//This class is the drawing tool box of the application 
 public class ToolsPanel extends JPanel{
-	
-	
-	private Tool[] toolbox;
-	private Tool toolUsed;
-	private AppModel appModel;
 
 	public ToolsPanel(Canvas canvas ,  MeshLayer meshLayer ,  AppModel appModel) {
-		
-		this.appModel = appModel;
-		
-		
-		toolUsed = new Pencil(appModel);
-		toolbox = new Tool[1];
-		toolbox[0] = toolUsed;
-		canvas.setToolUsed(toolUsed);
-		
-		
-		
+			
 		JCheckBox guideLines = new JCheckBox("Lineas guia");
 		guideLines.addItemListener(new ItemListener() {
 			
@@ -43,20 +30,26 @@ public class ToolsPanel extends JPanel{
 			}
 		});
 		
+		//Create the tools , the selected tool and all the tool buttons
+		JToolBar buttonsPanel = new JToolBar(JToolBar.VERTICAL);
 		
-		JToolBar buttonsPanel = new JToolBar(JToolBar.VERTICAL);		
-		buttonsPanel.add(new ToolButton(new ImageIcon("src\\img\\pencil.png")));
+		Tool pencil = new Pencil(appModel);
+		canvas.setToolUsed(pencil);
+		ToolButton pencilButton = new ToolButton(new ImageIcon("src\\img\\pencil.png") , pencil, canvas);
+		
+		ToolButton bucketButton = new ToolButton(new ImageIcon("src\\img\\paint_bucket.png"), new Bucket(appModel), canvas);
+		buttonsPanel.add(pencilButton);
+		buttonsPanel.add(bucketButton);
+		
 
-
+		//create the selection tools to modify the drawing features 
 		ColorSelector colorSelector = new ColorSelector(appModel);
 		ResizeStrokePanel resizerStrokePanel = new ResizeStrokePanel(appModel);
 
+		
+		//GroupLayout for this tool panel
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
-
-		// Configura las restricciones de GroupLayout
-		//layout.setAutoCreateGaps(true);
-		//layout.setAutoCreateContainerGaps(true);
 		
 		layout.setHorizontalGroup(layout.createParallelGroup()
 				.addComponent(buttonsPanel)

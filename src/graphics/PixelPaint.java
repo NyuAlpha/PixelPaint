@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -16,9 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-
 import model.AppModel;
-import tools.MeshLayer;
 
 //Main application window
 public class PixelPaint extends JFrame{
@@ -93,8 +92,8 @@ public class PixelPaint extends JFrame{
 	
 	
 	private void initVoidImage() {
-		int width = 512;
-		int height = 512;
+		int width = 516;
+		int height = 516;
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		int [] pixels = image.getRGB(0,0,width, height,null,0,width);
 		for(int i = 0 ; i < pixels.length ; i++) {
@@ -110,19 +109,26 @@ public class PixelPaint extends JFrame{
 		
 	    @Override
 	    public void mousePressed(MouseEvent e) {
-	    	canvas.clickedPoint(e.getPoint());
-	    	repaint();
+	    	if (e.getButton() == MouseEvent.BUTTON1) {
+		    	canvas.clickedPoint(e.getPoint());
+		    	repaint();
+	    	}
 	    }
 
 	    @Override
 	    public void mouseReleased(MouseEvent e) {
-	    	canvas.releasedPoint();
+	    	if (e.getButton() == MouseEvent.BUTTON1) {
+	    		canvas.releasedPoint();
+	    	}
 	    }
 
 	    @Override
 	    public void mouseDragged(MouseEvent e) {
-	    	canvas.changedPoint(e.getPoint());
-	    	repaint();
+	    	//if(e.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK){
+	    	if((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) != 0) {
+	    		canvas.changedPoint(e.getPoint());
+	    		repaint();
+	    	}
 	    }
 	}
 }

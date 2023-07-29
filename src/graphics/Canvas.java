@@ -26,7 +26,7 @@ public class Canvas extends JPanel{
 	//These variables store drawables for undo and redo functions
 	private Deque <Drawable> undoDrawables;
 	private Stack <Drawable> redoDrawables;
-	private static final int MAX_UNDO_DRAWABLES = 10;
+	private static final int MAX_UNDO_DRAWABLES = 40;
 	
 	//Control variable of the paintComponent method
 	private boolean repaint;
@@ -45,7 +45,7 @@ public class Canvas extends JPanel{
 		imageCopy = copyImage(image);
 		
 		undoDrawables  = new LinkedList<>();
-		redoDrawables = new Stack();
+		redoDrawables = new Stack<>();
 		
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	}
@@ -90,17 +90,16 @@ public class Canvas extends JPanel{
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Graphics2D imageG2 =  imageCopy.createGraphics();
 		
 		//draw with tools
 		if(point != null && !repaint) 
-			toolUsed.use(imageG2, point);
+			toolUsed.use(imageCopy, point);
 		
 		//draw everything saved in the drawable deque
 		else if (repaint) {
 			repaint = false;
 			for(Drawable d : undoDrawables) {
-				d.drawAll(imageG2);
+				d.drawAll(imageCopy);
 			}
 		}
 		//Draw the image in the canvas
@@ -129,7 +128,7 @@ public class Canvas extends JPanel{
 		//when the queue is full, the oldest drawable is removed from the queue and drawn to the original image
 		if(undoDrawables.size() >= MAX_UNDO_DRAWABLES) {
 			Drawable latterDrawable =  undoDrawables.removeFirst();
-			latterDrawable.drawAll((Graphics2D)image.getGraphics());
+			latterDrawable.drawAll(image);
 		}
 		//the current drawable is released and added to the the undo queue
 		undoDrawables.addLast(currentDrawable);

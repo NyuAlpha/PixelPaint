@@ -9,9 +9,7 @@ import java.awt.image.BufferedImage;
 public interface Drawable {
 
 	//Draws the shape or stroke stored within the instance
-	public abstract void drawAll(Graphics2D g);
+	public abstract void drawAll(BufferedImage image);
 	
-	//Dibuja solo los último añadido
-	public void drawLast(Graphics2D g2);
 	
 }
